@@ -4,9 +4,7 @@ import java.util.List;
 
 import ec.com.core.springrestfulservices.model.*;
 import ec.com.core.springrestfulservices.repository.ContactRepository;
-import ec.com.core.springrestfulservices.service.impl.AddressServiceImpl;
-import ec.com.core.springrestfulservices.service.impl.CreditCardServiceImpl;
-import ec.com.core.springrestfulservices.service.impl.PersonServiceImpl;
+import ec.com.core.springrestfulservices.service.impl.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,15 +13,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import ec.com.core.springrestfulservices.service.BeerService;
-import ec.com.core.springrestfulservices.service.impl.ContactServiceImpl;
-
 import javax.validation.Valid;
 
 /**
  * The Class MainController.
  */
 @RestController
+@CrossOrigin
 @RequestMapping(path="/")
 public class MainController {
 
@@ -47,6 +43,12 @@ public class MainController {
 
 	@Autowired
 	CreditCardServiceImpl creditCardServiceImpl;
+
+	@Autowired
+	UserServiceImpl userServiceImpl;
+
+	@Autowired
+	AuditorServiceImpl auditorServiceImpl;
 
 
 	
@@ -195,5 +197,119 @@ public class MainController {
 		return new ResponseEntity<List<CredictCard>>(creditCardList, HttpStatus.OK);
 
 	}
+
+	/**
+	 * get credentials for login
+	 * @param codigoPersona
+	 * @return
+	 */
+	@RequestMapping(value="/getUserByCodePerson/{codigoPersona}", method = RequestMethod.GET)
+	public ResponseEntity<UserApp> getUserByCodePerson(@PathVariable(value = "codigoPersona") int codigoPersona) {
+		logger.info("dentro de metodo getUserByCodePerson: "+codigoPersona);
+		UserApp userApp = userServiceImpl.getUserByCodePerson(codigoPersona);
+		if(userApp == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return new ResponseEntity<UserApp>(userApp, HttpStatus.OK);
+
+	}
+
+	/**
+	 * save credentials for user access to app
+	 * @param userApp
+	 * @return
+	 */
+	@RequestMapping(value="/saveUser", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<UserApp> saveUser(@RequestBody UserApp userApp){
+		logger.info("dentro de metodo save contact "+userApp);
+		return new ResponseEntity<UserApp>( userServiceImpl.saveCredentialsUser(userApp),HttpStatus.CREATED);
+	}
+
+
+	/**
+	 * save Object Person
+	 * @param person
+	 * @return
+	 */
+	@RequestMapping(value="/savePerson", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Person> savePerson(@RequestBody Person person){
+		logger.info("dentro de metodo save Person "+person);
+		return new ResponseEntity<Person>( personServiceImpl.savePerson(person),HttpStatus.CREATED);
+	}
+
+    /**
+     * get user by credentials request
+     * @param userApp
+     * @return
+     */
+	@RequestMapping(value="/getUserByCredentials", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<UserApp> getUserByCredentials(@RequestBody UserApp userApp) {
+		logger.info("dentro de metodo getUserByCredentials: "+userApp.toString());
+		UserApp userFromBdd = userServiceImpl.getUserByCredentials(userApp.getLogin(),userApp.getPasswd(), "ACTIVO");
+		if(userFromBdd == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return new ResponseEntity<UserApp>(userFromBdd, HttpStatus.OK);
+
+	}
+
+    /**
+     * update user to active user after to register
+     * @param id
+     * @param userApp
+     * @return
+     */
+    @PutMapping("/updateUser/{id}")
+    public ResponseEntity<UserApp> updateUser(@PathVariable(value = "id") int id,
+                                                 @Valid @RequestBody UserApp userApp) {
+        logger.info("dentro de metodo update user "+id);
+        UserApp userAppInMem = userServiceImpl.getUserByCodePerson(id);
+        if(userAppInMem == null) {
+            return ResponseEntity.notFound().build();
+        }
+        else{
+            userAppInMem.setUserStatus("ACTIVO");
+
+        }
+        return ResponseEntity.ok(userServiceImpl.saveCredentialsUser(userAppInMem));
+    }
+
+	@RequestMapping(value="/updateUserByCodePerson/{codigoPersona}", method = RequestMethod.GET)
+	public String  updateUserByCodePerson(@PathVariable(value = "codigoPersona") int codigoPersona) {
+		logger.info("dentro de metodo updateUserByCodePerson: "+codigoPersona);
+		UserApp userApp = userServiceImpl.getUserByCodePerson(codigoPersona);
+		if(userApp == null) {
+			//return ResponseEntity.notFound().build();
+			return "Error en actualizacion de registro";
+		}else{
+			userApp.setUserStatus("ACTIVO");
+			userServiceImpl.saveCredentialsUser(userApp);
+		}
+		return "Registro Actualizado";
+
+	}
+
+	@RequestMapping(value="/saveAuditor", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Auditor> saveAuditor(@RequestBody Auditor auditor){
+		logger.info("dentro de metodo save Auditor "+auditor);
+		return new ResponseEntity<Auditor>( auditorServiceImpl.saveAuditor(auditor),HttpStatus.CREATED);
+	}
+
+	/**
+	 * list all transactions for user
+	 * @param codePerson
+	 * @return
+	 */
+	@RequestMapping(value="/getAuditorByCodePerson/{codePerson}", method = RequestMethod.GET)
+	public ResponseEntity<List<Auditor>> getAuditorByCodePerson(@PathVariable(value = "codePerson") int codePerson) {
+		logger.info("dentro de metodo getAuditorByCodePerson: "+codePerson);
+		List<Auditor> auditorInMem = auditorServiceImpl.getListAuditorByCodePerson(codePerson);
+		if(auditorInMem == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return new ResponseEntity<List<Auditor>>(auditorInMem, HttpStatus.OK);
+
+	}
+
 
 }

@@ -8,13 +8,14 @@ import javax.persistence.*;
 @Entity
 @DynamicUpdate
 @Table(name="STG_CONTACT")
-@Inheritance (strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Person {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "CODIGO_PERSONA")
     private int codigoPersona;
+
     @Column(name = "NUMERO_IDENTIFICACION", length = 50, nullable = false)
     private String numeroIdentificacion;
     @Column(name = "TIPO_IDENTIFICACION", length = 5)
@@ -62,6 +63,16 @@ public class Person {
     @Column(name = "EMAIL_PRIMARIO", length = 80)
     private String emailPrimario;
 
+    @Column(name = "TYPE_PERSON", length = 20)
+    private String typePerson;
+
+    public String getTypePerson() {
+        return typePerson;
+    }
+
+    public void setTypePerson(String typePerson) {
+        this.typePerson = typePerson;
+    }
 
     public int getCodigoPersona() {
         return codigoPersona;

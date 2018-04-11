@@ -1,10 +1,11 @@
 package ec.com.core.springrestfulservices.model;
 
 
+
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.io.Serializable;
+
 
 @Entity
 @DynamicUpdate
@@ -40,6 +41,50 @@ public class UserApp extends Person{
 
     @Column(name = "LEVEL", length = 50)
     private String levelAccess;
+
+    @Column(name = "CODE_PERSON_ORIGIN")
+    private int codePersonOrigin;
+
+    @Column(name = "NUMBER_DOCUMENT_ORIGIN", length = 50)
+    private String numberDocumentOrigin;
+
+    @Column(name = "DATE_CREATE")
+    private String dateCreate;
+
+    @Column(name = "USER_STATUS", length = 10)
+    private String userStatus;
+
+    public String getUserStatus() {
+        return userStatus;
+    }
+
+    public void setUserStatus(String userStatus) {
+        this.userStatus = userStatus;
+    }
+
+    public String getDateCreate() {
+        return dateCreate;
+    }
+
+    public void setDateCreate(String dateCreate) {
+        this.dateCreate = dateCreate;
+    }
+
+    public int getCodePersonOrigin() {
+        return codePersonOrigin;
+    }
+
+    public void setCodePersonOrigin(int codePersonOrigin) {
+        this.codePersonOrigin = codePersonOrigin;
+    }
+
+    public String getNumberDocumentOrigin() {
+        return numberDocumentOrigin;
+    }
+
+    public void setNumberDocumentOrigin(String numberDocumentOrigin) {
+        this.numberDocumentOrigin = numberDocumentOrigin;
+    }
 
     public int getIdRolUser() {
         return idRolUser;
