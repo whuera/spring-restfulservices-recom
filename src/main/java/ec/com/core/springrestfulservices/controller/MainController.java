@@ -1,6 +1,7 @@
 package ec.com.core.springrestfulservices.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import ec.com.core.springrestfulservices.model.*;
 import ec.com.core.springrestfulservices.repository.ContactRepository;
@@ -292,6 +293,9 @@ public class MainController {
 	@RequestMapping(value="/saveAuditor", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Auditor> saveAuditor(@RequestBody Auditor auditor){
 		logger.info("dentro de metodo save Auditor "+auditor);
+		String uniqueID = UUID.randomUUID().toString();
+		String idTransacctionToSave = uniqueID.concat("-").concat(auditor.getNumberDocumentQuery());
+		auditor.setIdTransaction(idTransacctionToSave);
 		return new ResponseEntity<Auditor>( auditorServiceImpl.saveAuditor(auditor),HttpStatus.CREATED);
 	}
 
@@ -309,6 +313,18 @@ public class MainController {
 		}
 		return new ResponseEntity<List<Auditor>>(auditorInMem, HttpStatus.OK);
 
+	}
+
+	/**
+	 * process: return value calculate from all transactions for each users
+	 * @param codPerson
+	 * @return
+	 */
+	@RequestMapping(value="/getCostAuditorByCodePerson/{codePerson}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public double getCostAuditorByCodePerson(@PathVariable(value = "codePerson") int codPerson) {
+		logger.info("dentro de metodo getCostAuditorByCodePerson: "+codPerson);
+		double val_auditor = auditorServiceImpl.getCost(codPerson);
+		return val_auditor;
 	}
 
 

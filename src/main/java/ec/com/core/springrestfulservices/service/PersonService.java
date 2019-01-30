@@ -13,4 +13,6 @@ public interface PersonService {
     public Person getPersonById (int id);
 
     public Person getPersonByCode(int id);
+
+    public  Person savePerson (Person person);
 }

@@ -17,14 +17,13 @@ public class Auditor {
     @Column(name = "ID_USER_TRANSACTION", length = 100)
     private String idUserTransaction;
 
-    @Column(name = "ID_TRANSACTION")
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private int idTransaction;
+    @Column(name = "ID_TRANSACTION", length = 50)
+    private String idTransaction;
 
     @Column(name = "NUMBER_DOCUMENT_QUERY", length = 100)
     private String numberDocumentQuery;
 
-    @Column(name = "COD_PERSON_QUERY", length = 100)
+    @Column(name = "COD_PERSON_QUERY")
     private int codPersonQuery;
 
     @Column(name = "STATUS_QUERY", length = 100)
@@ -42,6 +41,17 @@ public class Auditor {
     @Column(name = "COUNTER", length = 100)
     private double counter;
 
+    @Column(name = "IP_CLIENT", length = 50)
+    private String ipclient;
+
+    public String getIpclient() {
+        return ipclient;
+    }
+
+    public void setIpclient(String ipclient) {
+        this.ipclient = ipclient;
+    }
+
     public int getIdAuditor() {
         return idAuditor;
     }
@@ -58,11 +68,11 @@ public class Auditor {
         this.idUserTransaction = idUserTransaction;
     }
 
-    public double getIdTransaction() {
+    public String getIdTransaction() {
         return idTransaction;
     }
 
-    public void setIdTransaction(int idTransaction) {
+    public void setIdTransaction(String idTransaction) {
         this.idTransaction = idTransaction;
     }
 

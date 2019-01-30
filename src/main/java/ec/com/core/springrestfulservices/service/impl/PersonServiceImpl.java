@@ -22,5 +22,10 @@ public class PersonServiceImpl implements PersonService {
     public Person getPersonByCode(int id){
         return personRepository.findByCodigoPersona(id);
     }
+
+    @Override
+    public Person savePerson(Person person) {
+        return personRepository.save(person);
+    }
 }
 
