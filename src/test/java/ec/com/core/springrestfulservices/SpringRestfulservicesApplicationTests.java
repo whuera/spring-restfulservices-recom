@@ -15,8 +15,6 @@ public class SpringRestfulservicesApplicationTests {
 	/**
 	 * Context loads.
 	 */
-	@Test
-	public void contextLoads() {
-	}
+
 
 }

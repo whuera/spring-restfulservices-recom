@@ -15,10 +15,17 @@ public class PersonServiceImpl implements PersonService {
       return personRepository.findByNumeroIdentificacion(numberDocument);
     }
 
-    public Person getPersonById (int id){
-        return personRepository.findOne(id);
+    @Override
+    public Person getPersonById(int id) {
+        return null;
     }
 
+    /*
+        public Person getPersonById (int id){
+            return personRepository.findOne(id);
+            //return personRepository.findByCodigoPersona(id);
+        }
+    */
     public Person getPersonByCode(int id){
         return personRepository.findByCodigoPersona(id);
     }
