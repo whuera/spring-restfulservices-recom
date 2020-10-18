@@ -51,7 +51,8 @@ public class ContactServiceImpl implements ContactService {
      */
 		public Contact getContactById (int id){
             logger.info("search contcat by id: "+id);
-	            return contactRepository.findOne(id);
+	   //         return contactRepository.findOne(id);
+			return null;
         }
 
 }

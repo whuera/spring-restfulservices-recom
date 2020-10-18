@@ -1,8 +1,5 @@
 package ec.com.core.springrestfulservices.controller;
 
-import java.util.List;
-import java.util.UUID;
-
 import ec.com.core.springrestfulservices.model.*;
 import ec.com.core.springrestfulservices.repository.ContactRepository;
 import ec.com.core.springrestfulservices.service.impl.*;
@@ -14,7 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * The Class MainController.
@@ -117,9 +115,10 @@ public class MainController {
 	 */
 
 	//@RequestMapping(value="/{id}/updateContact", method = RequestMethod.PUT)
+	/*
 	@PutMapping("/updateContact/{id}")
 	public ResponseEntity<Contact> updateContact(@PathVariable(value = "id") int idContact,
-										   @Valid @RequestBody Contact contact) {
+										    @RequestBody Contact contact) {
 		logger.info("dentro de metodo update contact "+idContact);
 		ec.com.core.springrestfulservices.model.Contact contactInMem = contactRepository.findOne(idContact);
 		if(contactInMem == null) {
@@ -131,12 +130,12 @@ public class MainController {
 		}
 		return ResponseEntity.ok(contactServiceImpl.saveContact(contactInMem));
 	}
-
+	*/
 	/**
 	 * Method to logic delete from DB
-	 * @param idContact
 	 * @return
 	 */
+	/*
 	@PutMapping("/deleteContact/{id}")
 	public ResponseEntity<Contact> deleteContact(@PathVariable(value = "id") int idContact) {
 		logger.info("dentro de metodo delete contact "+idContact);
@@ -148,7 +147,7 @@ public class MainController {
 		return ResponseEntity.ok(contactServiceImpl.saveContact(contactDel));
 	}
 
-
+	*/
 	@RequestMapping(value="/getPersonByNumberDocument/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Person> getPersonByNumberDocument(@PathVariable(value = "id") String numberDocument) {
 		logger.info("dentro de metodo getContactByNumberDocument: "+numberDocument);
@@ -262,7 +261,7 @@ public class MainController {
      */
     @PutMapping("/updateUser/{id}")
     public ResponseEntity<UserApp> updateUser(@PathVariable(value = "id") int id,
-                                                 @Valid @RequestBody UserApp userApp) {
+                                                  @RequestBody UserApp userApp) {
         logger.info("dentro de metodo update user "+id);
         UserApp userAppInMem = userServiceImpl.getUserByCodePerson(id);
         if(userAppInMem == null) {
